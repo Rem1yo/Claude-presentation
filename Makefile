@@ -1,12 +1,21 @@
-.PHONY: run status save
-
+# === Управление Фронтендом (Сайт-презентация) ===
 run:
 	open index.html
-
-status:
-	git status
 
 save:
 	git add -A
 	git commit -m "$(msg)"
 	git push
+
+# === Управление Бэкендом (Payload CMS + PostgreSQL) ===
+# Собрать и запустить бэкенд с базой данных в фоне
+b-up:
+	cd back && docker compose up -d --build
+
+# Полностью остановить бэкенд и удалить контейнеры
+b-down:
+	cd back && docker compose down
+
+# Смотреть логи бэкенда в реальном времени (для отладки)
+b-logs:
+	cd back && docker compose logs -f api
