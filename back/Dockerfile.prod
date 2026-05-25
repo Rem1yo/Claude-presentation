@@ -1,0 +1,23 @@
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
+COPY . .
+# Фиктивный DB URI для прохождения next build без реальной БД
+ENV DATABASE_URI=postgresql://dummy:dummy@localhost:5432/dummy
+ENV PAYLOAD_SECRET=build-time-secret
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
+
+FROM node:22-alpine
+WORKDIR /app
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/next.config.ts ./
+COPY --from=builder /app/redirects.ts ./
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD ["npm", "start"]
