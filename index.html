@@ -1040,7 +1040,9 @@ function ss(n){
 <script>
 (async () => {
   try {
-    const r = await fetch('https://claude-presentation-eths.vercel.app/api/content?limit=100&depth=0');
+    const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost';
+    const API = isLocal ? 'http://localhost:3000' : 'https://claude-presentation-eths.vercel.app';
+    const r = await fetch(`${API}/api/content?limit=100&depth=0`);
     if (!r.ok) return;
     const { docs = [] } = await r.json();
     docs.forEach(({ key, value }) => {
