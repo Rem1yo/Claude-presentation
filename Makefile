@@ -19,3 +19,7 @@ b-down:
 # Смотреть логи бэкенда в реальном времени (для отладки)
 b-logs:
 	cd back && docker compose logs -f api
+
+# Засидить локальную БД дефолтным контентом (запускать после b-up)
+b-seed:
+	docker exec back-api-1 node --import tsx/esm seed-content.mjs
