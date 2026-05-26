@@ -14,7 +14,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
-import { Content } from './collections/Content' // Твой импорт на месте!
+import { Content } from './collections/Content'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
